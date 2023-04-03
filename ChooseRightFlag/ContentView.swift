@@ -13,7 +13,6 @@ struct ContentView: View {
     @State private var score = 0
     @State private var showScore = false
     @State private var scoreTitle = ""
-    private var indexes = (0, 0, 0)
 
     var body: some View {
         ZStack {
@@ -40,7 +39,7 @@ struct ContentView: View {
                         .shadow(color: Color.black, radius: 7, x: 3, y: 3)
                 }
                 Spacer()
-                ForEach(0 ..< 3) { index in
+                ForEach(0..<3) { index in
                     Button {
                         flagTapped(index)
                         showScore = true
@@ -66,7 +65,7 @@ struct ContentView: View {
 
     func ask() {
         countries.shuffle()
-        correctAnswer = Int.random(in: 0..<3)
+        correctAnswer = Int.random(in: 0...2)
     }
 
     func flagTapped(_ number: Int) {
