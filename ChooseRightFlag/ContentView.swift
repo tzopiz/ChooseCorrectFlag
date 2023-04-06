@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var countries = Country.data
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var score = 0
@@ -21,46 +22,59 @@ struct ContentView: View {
                            endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
             VStack(spacing: 30) {
-                VStack(spacing: 7) {
-                    Text("Choose a flag")
-                        .font(.title)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .shadow(color: Color.black, radius: 7, x: 3, y: 3)
-                    Text("\(countries[correctAnswer].1)")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .shadow(color: Color.black, radius: 7, x: 3, y: 3)
-                    Text("Score: \(score)")
-                        .font(.callout)
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                        .shadow(color: Color.black, radius: 7, x: 3, y: 3)
-                }
+                TopLabelView
                 Spacer()
-                ForEach(0..<3) { index in
-                    Button {
-                        flagTapped(index)
-                        showScore = true
-                        ask()
-                    } label: {
-                        Image("\(countries[index].0)")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 260, height: 130)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, style: StrokeStyle(lineWidth: 5)))
-                            .shadow(radius: 10)
-                    }
-                }
+                FlagsView
                 Spacer()
-                Text("Best: \(UserDefaults.standard.bestScore)")
-                    .font(.title3)
-                    .foregroundColor(.white)
-                    .shadow(color: Color.black, radius: 7, x: 3, y: 3)
+                BestScoreView
             }
         }
+    }
+    
+    var TopLabelView: some View {
+        VStack(spacing: 7) {
+            Text("Choose a flag")
+                .font(.title)
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+                .shadow(color: Color.black, radius: 7, x: 3, y: 3)
+            Text("\(countries[correctAnswer].1)")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .shadow(color: Color.black, radius: 7, x: 3, y: 3)
+            Text("Score: \(score)")
+                .font(.callout)
+                .font(.subheadline)
+                .foregroundColor(.white)
+                .shadow(color: Color.black, radius: 7, x: 3, y: 3)
+        }
+    }
+    var FlagsView: some View {
+        ForEach(0..<3) { index in
+            Button {
+                flagTapped(index)
+                showScore = true
+                ask()
+            } label: {
+                HStack {
+                    Spacer(minLength: 64)
+                    Image("\(countries[index].0)")
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, style: StrokeStyle(lineWidth: 5)))
+                        .shadow(radius: 10)
+                    Spacer(minLength: 64)
+                }
+            }
+        }
+    }
+    var BestScoreView: some View {
+        Text("Best: \(UserDefaults.standard.bestScore)")
+            .font(.title3)
+            .foregroundColor(.white)
+            .shadow(color: Color.black, radius: 7, x: 3, y: 3)
     }
 
     func ask() {
